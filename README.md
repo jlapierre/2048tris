@@ -1,3 +1,3 @@
 # 2048tris
 
-Todo: add unit (and functional?) tests to catch and fix the bugs
+Todo: piece rotation, tests, write down any other features i haven't implemented yet

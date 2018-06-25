@@ -69,7 +69,7 @@ class Board:
     def cell_collision_exists(self, coords, exempt_cells):
         adjacent_coords = TransformPiece.get_adjacent_coordinates(coords, self.current_direction)
         adjacent_value = self.get_cell_value(adjacent_coords)
-        return adjacent_coords not in exempt_cells and\
+        return adjacent_coords not in exempt_cells and \
                (adjacent_value > 0 or
                 (adjacent_value == -1 and not self.is_in_buffer(adjacent_coords, self.current_direction)))
 
@@ -104,11 +104,11 @@ class Board:
         """Drop all cells on the board as individuals, including the active piece"""
         if self.any_in_buffer(self.active_piece, self.current_direction):
             return
-        for cell in self.sort_cells(self.grid.keys(), self.current_direction):
+        for cell in TransformPiece.sort_cells(self.grid.keys(), self.current_direction):
             self.drop([cell])
 
     def shift_active_piece(self, direction):
-        if self.current_direction == direction or self.get_opposite_direction(self.current_direction) == direction:
+        if self.current_direction == direction or TransformPiece.get_opposite_direction(self.current_direction) == direction:
             return
         self.shift_cells(self.active_piece, direction)
         self.active_piece = TransformPiece.shift_coordinates(self.active_piece, direction)
@@ -143,11 +143,11 @@ class Board:
                 column.append((i, y))
         elif direction == "up":
             # x, y-last
-            for i in range(y+1, self.size):
+            for i in range(y + 1, self.size):
                 column.append((x, i))
         elif direction == "left":
             # x-last, y
-            for i in range(x+1, self.size):
+            for i in range(x + 1, self.size):
                 column.append((i, y))
 
         return column
@@ -163,7 +163,7 @@ class Board:
         """merge the given matching cells and shift others accordingly"""
         self.set_cell_value(topCell, self.get_cell_value(topCell) * 2)
         self.shift_column(bottomCell, self.current_direction)
-        self.drop_orphans()
+        self.drop_unattached()
 
     def merge_with_completed_rows(self):
         """check for completed rows and merge matching cells down into them"""
@@ -197,24 +197,24 @@ class Board:
                         cell_above = TransformPiece.get_adjacent_coordinates(cell, "right")
                         self.do_static_merge(cell_above, cell)
 
-    def drop_orphans(self):
+    def drop_unattached(self):
         """find all pieces not attached to any others and drop them"""
         for x in range(self.size):
             for y in range(self.size):
                 coords = (x, y)
-                if self.is_cell_orphan(coords):
+                if self.is_cell_unattached(coords):
                     self.drop([coords])
 
-    def is_cell_orphan(self, coords):
-        return self.get_cell_value(coords) != 0\
-               and self.get_adjacent_value(coords, "up") < 1\
-               and self.get_adjacent_value(coords, "down") < 1\
-               and self.get_adjacent_value(coords, "left") < 1\
+    def is_cell_unattached(self, coords):
+        return self.get_cell_value(coords) != 0 \
+               and self.get_adjacent_value(coords, "up") < 1 \
+               and self.get_adjacent_value(coords, "down") < 1 \
+               and self.get_adjacent_value(coords, "left") < 1 \
                and self.get_adjacent_value(coords, "right") < 1
 
-    def is_piece_orphan(self, piece):
-        #todo: account for walls
-        is_orphan = True
+    def is_piece_unattached(self, piece):
+        # todo: account for walls
+        is_unattached = True
         # move_down = not any
         for cell in piece:
             if self.get_cell_value(cell) == 0:
@@ -223,8 +223,8 @@ class Board:
             surrounding_cells = list(map(lambda direction: TransformPiece.get_adjacent_coordinates(cell, direction),
                                          ["up", "down", "left", "right"]))
             no_outside_adjacents = all(self.get_cell_value(xy) == 0 or xy in piece for xy in surrounding_cells)
-            is_orphan = is_orphan and no_outside_adjacents
-        return is_orphan
+            is_unattached = is_unattached and no_outside_adjacents
+        return is_unattached
 
     def handle_active_piece_collision(self):
         for cell in self.active_piece:
@@ -234,7 +234,7 @@ class Board:
                 self.set_cell_value(adjacent_cell, adjacent_value * 2)
                 self.clear_cell(cell)
         # move down remaining active cells if they are floating
-        if self.is_piece_orphan(self.active_piece):
+        if self.is_piece_unattached(self.active_piece):
             self.shift_cells(self.active_piece, self.current_direction)
 
         # if piece is out of bounds, declare game over
@@ -244,7 +244,7 @@ class Board:
     def shift_cells(self, cells, direction):
         """shift the given cells by one in the given direction, ignoring empty ones"""
         # sorted so cells within the same piece won't run into each other
-        sorted_cells = self.sort_cells(cells, direction)
+        sorted_cells = TransformPiece.sort_cells(cells, direction)
         for cell in sorted_cells:
             value = self.get_cell_value(cell)
             if value < 1:
@@ -255,7 +255,7 @@ class Board:
                 # shift cell into empty space
                 self.set_cell_value(adjacent_coords, value)
                 self.clear_cell(cell)
-            elif adjacent_value:
+            elif adjacent_value == value:
                 # do merge
                 self.set_cell_value(adjacent_coords, value * 2)
                 self.clear_cell(cell)
@@ -265,33 +265,6 @@ class Board:
             self.set_cell_value(cell, -1)
         else:
             self.set_cell_value(cell, 0)
-
-    @staticmethod
-    def sort_cells(cells, direction):
-        """return a sorted copy of the given cells with the 'bottom' cells first relative to the given direction"""
-        lam = None
-        if direction == "left" or "right":
-            lam = lambda cell: cell[0]
-        elif direction == "up" or "down":
-            lam = lambda cell: cell[1]
-        sorted_cells = list(sorted(cells, key=lam))
-        if direction == "down" or "right":
-            sorted_cells.reverse()
-        return sorted_cells
-
-    @staticmethod
-    def get_opposite_direction(direction):
-        if direction == 'up':
-            return "down"
-        elif direction == 'down':
-            return "up"
-        elif direction == 'left':
-            return "right"
-        elif direction == 'right':
-            return "left"
-        else:
-            # no valid direction given
-            return None
 
     def is_game_won(self):
         return self.get_max_cell_value() >= 2048

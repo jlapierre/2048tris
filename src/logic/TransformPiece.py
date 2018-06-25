@@ -27,3 +27,30 @@ class TransformPiece:
     def get_adjacent_coordinates(coords, direction):
         """returns the next coordinate pair in the given direction"""
         return TransformPiece.shift_coordinates([coords], direction)[0]
+
+    @staticmethod
+    def sort_cells(cells, direction):
+        """return a sorted copy of the given cells with the 'bottom' cells first relative to the given direction"""
+        lam = None
+        if direction == "left" or direction == "right":
+            lam = lambda cell: cell[0]
+        elif direction == "up" or direction == "down":
+            lam = lambda cell: cell[1]
+        sorted_cells = list(sorted(cells, key=lam))
+        if direction == "down" or direction == "right":
+            sorted_cells.reverse()
+        return sorted_cells
+
+    @staticmethod
+    def get_opposite_direction(direction):
+        if direction == 'up':
+            return "down"
+        elif direction == 'down':
+            return "up"
+        elif direction == 'left':
+            return "right"
+        elif direction == 'right':
+            return "left"
+        else:
+            # no valid direction given
+            return None
