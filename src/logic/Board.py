@@ -80,6 +80,9 @@ class Board:
         return any(self.is_in_buffer(cell, direction) for cell in piece)
 
     def is_in_buffer(self, coords, direction):
+        """is the given piece in the buffer"""
+        # technically should add conditions to not let the piece be off to the side of the buffer
+        # however, given the board size the piece couldn't possibly get there in time so it's a non-issue
         if direction == "down":
             return coords[1] < 0
         elif direction == "up":
@@ -99,6 +102,29 @@ class Board:
     def drop_active_piece(self):
         self.active_piece = self.drop(self.active_piece)
         self.handle_active_piece_collision()
+
+    def rotate_active_piece(self):
+        # TODO: finish debugging
+        transformed_active_piece, pivot = TransformPiece.rotate(self.active_piece)
+        # do not allow rotation if it would cause an invalid (non-combo) overlap
+        for c in range(len(transformed_active_piece)):
+            cell = transformed_active_piece[c]
+            if cell == pivot or cell in self.active_piece:
+                continue
+            val = self.get_cell_value(cell)
+            if val != 0 and val != self.get_cell_value(self.active_piece[c]):
+                return
+        # do rotation and set new values
+        for c in range(len(transformed_active_piece)):
+            cell = transformed_active_piece[c]
+            if cell == pivot:
+                continue
+            val = self.get_cell_value(cell)
+            if cell not in self.active_piece and val == self.get_cell_value(self.active_piece[c]):
+                # if collision
+                self.set_cell_value(cell, val * 2)
+            else:
+                self.set_cell_value(cell, val)
 
     def static_drop(self):
         """Drop all cells on the board as individuals, including the active piece"""
@@ -245,6 +271,16 @@ class Board:
         """shift the given cells by one in the given direction, ignoring empty ones"""
         # sorted so cells within the same piece won't run into each other
         sorted_cells = TransformPiece.sort_cells(cells, direction)
+        # if trying to shift past a wall, abort mission
+        for cell in sorted_cells:
+            value = self.get_cell_value(cell)
+            if value < 1:
+                continue
+            adjacent_coords = TransformPiece.get_adjacent_coordinates(cell, direction)
+            adjacent_value = self.get_cell_value(adjacent_coords)
+            if adjacent_value == -1 and not self.is_in_buffer(adjacent_coords, self.current_direction):
+                return
+        # do shift
         for cell in sorted_cells:
             value = self.get_cell_value(cell)
             if value < 1:

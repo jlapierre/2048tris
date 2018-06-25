@@ -1,3 +1,6 @@
+import numpy
+
+
 class TransformPiece:
 
     @staticmethod
@@ -54,3 +57,25 @@ class TransformPiece:
         else:
             # no valid direction given
             return None
+
+    @staticmethod
+    def rotate(piece):
+        """rotate piece counter-clockwise"""
+        new_piece = []
+        # declare rotation vector
+        rotation_vector = [[0, -1], [1, 0]]
+        # get pivot point: avg x, avg
+        x = numpy.round(numpy.mean(list(map(lambda c: c[0], piece))), 0)
+        y = numpy.round(numpy.mean(list(map(lambda c: c[1], piece))), 0)
+        pivot = (x, y)
+        for cell in piece:
+            if cell != pivot:
+                # get relative coords to pivot
+                relative_cell = [(cell[0] - pivot[0]), (cell[1] - pivot[1])]
+                # matrix multiply to get relative transformed cell
+                relative_transformed = numpy.dot(rotation_vector, relative_cell)
+                # add back in distance to pivot to get abs coord
+                abs_transformed = (int(relative_transformed[0] + pivot[0]), int(relative_transformed[1] + pivot[1]))
+                # append abs transformed cell to new_piece
+                new_piece.append(abs_transformed)
+        return new_piece, pivot

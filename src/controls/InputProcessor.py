@@ -33,5 +33,7 @@ class InputProcessor:
                     return "right"
                 elif event.key == K_SPACE:
                     return "drop"
+                elif event.key == K_SLASH:
+                    return "rotate"
                 else:
                     return None

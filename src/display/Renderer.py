@@ -39,6 +39,8 @@ class Renderer:
         if piece_shift is not None:
             if piece_shift == "drop":
                 self.board.drop_active_piece()
+            elif piece_shift == "rotate":
+                self.board.rotate_active_piece()
             else:
                 self.board.shift_active_piece(piece_shift)
         self.board.update_grid()
