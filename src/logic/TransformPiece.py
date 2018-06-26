@@ -67,7 +67,7 @@ class TransformPiece:
         # get pivot point: avg x, avg
         x = numpy.round(numpy.mean(list(map(lambda c: c[0], piece))), 0)
         y = numpy.round(numpy.mean(list(map(lambda c: c[1], piece))), 0)
-        pivot = (x, y)
+        pivot = (int(x), int(y))
         for cell in piece:
             if cell != pivot:
                 # get relative coords to pivot
@@ -78,4 +78,29 @@ class TransformPiece:
                 abs_transformed = (int(relative_transformed[0] + pivot[0]), int(relative_transformed[1] + pivot[1]))
                 # append abs transformed cell to new_piece
                 new_piece.append(abs_transformed)
-        return new_piece, pivot
+            else:
+                new_piece.append((int(cell[0]), int(cell[1])))
+        return new_piece
+
+    @staticmethod
+    def is_square(piece):
+        """are the given coordinates a square?"""
+        # [cell_0] [cell_1]
+        # [cell_2] [cell_3]
+        # ^ checking for the other 3 cells relative to 0
+        min_x = min(piece, key=lambda c: c[0])[0]
+        cell_0 = min(filter(lambda cl: cl[0] == min_x, piece), key=lambda c: c[1])
+        cell_1 = False
+        cell_2 = False
+        cell_3 = False
+        for cell in piece:
+            if cell == cell_0:
+                continue
+            elif cell[0] == cell_0[0] + 1 and cell[1] == cell_0[1]:
+                cell_1 = True
+            elif cell[0] == cell_0[0] and cell[1] == cell_0[1] + 1:
+                cell_2 = True
+            elif cell[0] == cell_0[0] + 1 and cell[1] == cell_0[1] + 1:
+                cell_3 = True
+        return cell_1 and cell_2 and cell_3
+

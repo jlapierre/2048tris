@@ -19,8 +19,8 @@ class PieceFactory:
 
     @staticmethod
     def get_value():
-        """return 2 or 4 as the value of the cells in the new piece"""
-        return random.choice([2, 4])
+        """return 2 or 4 as the value of the cells in the new piece, with a 90% chance of a 2"""
+        return random.choice([2, 2, 2, 2, 2, 2, 2, 2, 2, 4])
 
     @staticmethod
     def get_start_point(board_size, direction):

@@ -104,27 +104,55 @@ class Board:
         self.handle_active_piece_collision()
 
     def rotate_active_piece(self):
-        # TODO: finish debugging
-        transformed_active_piece, pivot = TransformPiece.rotate(self.active_piece)
+        if TransformPiece.is_square(self.active_piece):
+            return
+        transformed_active_piece = TransformPiece.rotate(self.active_piece)
         # do not allow rotation if it would cause an invalid (non-combo) overlap
         for c in range(len(transformed_active_piece)):
             cell = transformed_active_piece[c]
-            if cell == pivot or cell in self.active_piece:
+            if cell in self.active_piece:
                 continue
-            val = self.get_cell_value(cell)
-            if val != 0 and val != self.get_cell_value(self.active_piece[c]):
+            space_val = self.get_cell_value(cell)
+            if space_val != 0 and space_val != self.get_cell_value(self.active_piece[c]):
                 return
         # do rotation and set new values
+        # for c in range(len(transformed_active_piece)):
+        #     cell = transformed_active_piece[c]
+        #     if cell in self.active_piece:
+        #         continue
+        #     # value of the space the cell is trying to rotate into
+        #     space_val = self.get_cell_value(cell)
+        #     # value of the cell being rotated
+        #     cell_val = self.get_cell_value(self.active_piece[c])
+        #     if space_val == cell_val:
+        #         # if collision
+        #         self.set_cell_value(cell, cell_val * 2)
+        #     else:
+        #         self.set_cell_value(cell, cell_val)
+        #     if self.active_piece[c] not in transformed_active_piece:
+        #         # clear old location of cell, unless another active cell rotated into it
+        #         self.clear_cell(self.active_piece[c])
+        #
+        # ok, new strategy: instead of the above convoluted mess, just clear the active piece and then set the new
+        # values, checking for collisions. handle collisions accordingly
+        # value of each cell in the active piece, which are the same
+        val = self.get_cell_value(self.active_piece[0])
+        collision = False
+        for cell in self.active_piece:
+            self.clear_cell(cell)
+        self.active_piece = transformed_active_piece
         for c in range(len(transformed_active_piece)):
-            cell = transformed_active_piece[c]
-            if cell == pivot:
-                continue
-            val = self.get_cell_value(cell)
-            if cell not in self.active_piece and val == self.get_cell_value(self.active_piece[c]):
-                # if collision
-                self.set_cell_value(cell, val * 2)
+            new_cell = transformed_active_piece[c]
+            space_val = self.get_cell_value(new_cell)
+            if space_val == val:
+                self.set_cell_value(new_cell, val * 2)
+                collision = True
             else:
-                self.set_cell_value(cell, val)
+                self.set_cell_value(new_cell, val)
+        # if piece is out of bounds after a collision, declare game over
+        if collision and any(self.is_out_of_bounds(cell) for cell in self.active_piece):
+            self.game_over = True
+
 
     def static_drop(self):
         """Drop all cells on the board as individuals, including the active piece"""
@@ -239,16 +267,14 @@ class Board:
                and self.get_adjacent_value(coords, "right") < 1
 
     def is_piece_unattached(self, piece):
-        # todo: account for walls
         is_unattached = True
-        # move_down = not any
         for cell in piece:
-            if self.get_cell_value(cell) == 0:
+            if self.get_cell_value(cell) <= 0:
                 # ignore empty cells
                 continue
             surrounding_cells = list(map(lambda direction: TransformPiece.get_adjacent_coordinates(cell, direction),
                                          ["up", "down", "left", "right"]))
-            no_outside_adjacents = all(self.get_cell_value(xy) == 0 or xy in piece for xy in surrounding_cells)
+            no_outside_adjacents = all(self.get_cell_value(xy) <= 0 or xy in piece for xy in surrounding_cells)
             is_unattached = is_unattached and no_outside_adjacents
         return is_unattached
 
