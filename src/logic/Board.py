@@ -143,7 +143,10 @@ class Board:
             self.drop([cell])
 
     def shift_active_piece(self, direction):
-        if self.current_direction == direction or TransformPiece.get_opposite_direction(self.current_direction) == direction:
+        if self.current_direction == direction:
+            return
+        elif TransformPiece.get_opposite_direction(self.current_direction) == direction:
+            self.rotate_active_piece()
             return
         self.shift_cells(self.active_piece, direction)
         new_coords = TransformPiece.shift_coordinates(self.active_piece, direction)
@@ -267,7 +270,8 @@ class Board:
         for cell in self.active_piece:
             adjacent_cell = TransformPiece.get_adjacent_coordinates(cell, self.current_direction)
             adjacent_value = self.get_adjacent_value(cell, self.current_direction)
-            if self.cell_collision_exists(cell, self.active_piece) and self.get_cell_value(cell) == adjacent_value:
+            if adjacent_cell not in self.active_piece and self.get_cell_value(cell) == adjacent_value:
+                # do merge
                 self.set_cell_value(adjacent_cell, adjacent_value * 2)
                 self.clear_cell(cell)
         # move down remaining active cells if they are floating
