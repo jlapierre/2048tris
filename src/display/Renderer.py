@@ -25,11 +25,17 @@ class Renderer:
         self.clock = pygame.time.Clock()
 
     def render(self):
-        while not self.board.game_over:
+        running = True
+        while running:
             event_list = pygame.event.get()
             self.update_board(event_list)
             self.draw_board()
             self.clock.tick(3)
+            for event in event_list:
+                if event.type == pygame.QUIT:
+                    running = False
+            if self.board.game_over:
+                running = False
 
     def update_board(self, event_list):
         new_dir = InputProcessor.get_new_direction(event_list)
