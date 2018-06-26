@@ -115,27 +115,7 @@ class Board:
             space_val = self.get_cell_value(cell)
             if space_val != 0 and space_val != self.get_cell_value(self.active_piece[c]):
                 return
-        # do rotation and set new values
-        # for c in range(len(transformed_active_piece)):
-        #     cell = transformed_active_piece[c]
-        #     if cell in self.active_piece:
-        #         continue
-        #     # value of the space the cell is trying to rotate into
-        #     space_val = self.get_cell_value(cell)
-        #     # value of the cell being rotated
-        #     cell_val = self.get_cell_value(self.active_piece[c])
-        #     if space_val == cell_val:
-        #         # if collision
-        #         self.set_cell_value(cell, cell_val * 2)
-        #     else:
-        #         self.set_cell_value(cell, cell_val)
-        #     if self.active_piece[c] not in transformed_active_piece:
-        #         # clear old location of cell, unless another active cell rotated into it
-        #         self.clear_cell(self.active_piece[c])
-        #
-        # ok, new strategy: instead of the above convoluted mess, just clear the active piece and then set the new
-        # values, checking for collisions. handle collisions accordingly
-        # value of each cell in the active piece, which are the same
+        # value of each cell in the active piece
         val = self.get_cell_value(self.active_piece[0])
         collision = False
         for cell in self.active_piece:

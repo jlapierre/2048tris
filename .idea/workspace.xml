@@ -4,8 +4,6 @@
     <list default="true" id="a77914a6-3616-497d-b9bb-6d50981046f2" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/logic/Board.py" afterPath="$PROJECT_DIR$/src/logic/Board.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/logic/PieceFactory.py" afterPath="$PROJECT_DIR$/src/logic/PieceFactory.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/logic/TransformPiece.py" afterPath="$PROJECT_DIR$/src/logic/TransformPiece.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -19,11 +17,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="Board.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Board.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/logic/Board.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="378">
-              <caret line="152" column="0" lean-forward="false" selection-start-line="152" selection-start-column="0" selection-end-line="152" selection-end-column="0" />
+            <state relative-caret-position="384">
+              <caret line="117" column="48" lean-forward="false" selection-start-line="117" selection-start-column="48" selection-end-line="117" selection-end-column="48" />
               <folding>
                 <element signature="e#0#47#0" expanded="true" />
               </folding>
@@ -31,7 +29,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Renderer.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Renderer.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/display/Renderer.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="450">
@@ -44,7 +42,7 @@
       <file leaf-file-name="TransformPiece.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/logic/TransformPiece.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="318">
+            <state relative-caret-position="2040">
               <caret line="85" column="25" lean-forward="true" selection-start-line="85" selection-start-column="25" selection-end-line="85" selection-end-column="25" />
               <folding />
             </state>
@@ -488,7 +486,14 @@
       <option name="project" value="LOCAL" />
       <updated>1529895624162</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="rotation is working! also: new pieces are a 2 9/10 times like in the original 2048, and is_piece_unattached accounts for walls">
+      <created>1529979626047</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1529979626047</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -525,7 +530,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="fix for piece shifting bug" />
     <MESSAGE value="add rotation logic (not working yet), other misc fixes" />
-    <option name="LAST_COMMIT_MESSAGE" value="add rotation logic (not working yet), other misc fixes" />
+    <MESSAGE value="rotation is working! also: new pieces are a 2 9/10 times like in the original 2048, and is_piece_unattached accounts for walls" />
+    <option name="LAST_COMMIT_MESSAGE" value="rotation is working! also: new pieces are a 2 9/10 times like in the original 2048, and is_piece_unattached accounts for walls" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -552,7 +558,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/logic/Board.py</url>
-          <line>138</line>
+          <line>118</line>
           <option name="timeStamp" value="28" />
         </line-breakpoint>
       </breakpoints>
@@ -983,9 +989,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/display/Renderer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="42" column="0" lean-forward="false" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/logic/TransformPiece.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="318">
+        <state relative-caret-position="2040">
           <caret line="85" column="25" lean-forward="true" selection-start-line="85" selection-start-column="25" selection-end-line="85" selection-end-column="25" />
           <folding />
         </state>
@@ -993,19 +1007,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/logic/Board.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="378">
-          <caret line="152" column="0" lean-forward="false" selection-start-line="152" selection-start-column="0" selection-end-line="152" selection-end-column="0" />
+        <state relative-caret-position="384">
+          <caret line="117" column="48" lean-forward="false" selection-start-line="117" selection-start-column="48" selection-end-line="117" selection-end-column="48" />
           <folding>
             <element signature="e#0#47#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/display/Renderer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="42" column="0" lean-forward="false" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
