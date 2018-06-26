@@ -71,18 +71,19 @@ class Board:
         adjacent_value = self.get_cell_value(adjacent_coords)
         return adjacent_coords not in exempt_cells and \
                (adjacent_value > 0 or
-                (adjacent_value == -1 and not self.is_in_buffer(adjacent_coords, self.current_direction)))
+                (adjacent_value == -1 and not self.is_in_buffer(adjacent_coords)))
 
     def piece_collision_exists(self, cells):
         return any(self.cell_collision_exists(coords, cells) for coords in cells)
 
-    def any_in_buffer(self, piece, direction):
-        return any(self.is_in_buffer(cell, direction) for cell in piece)
+    def any_in_buffer(self, piece):
+        return any(self.is_in_buffer(cell) for cell in piece)
 
-    def is_in_buffer(self, coords, direction):
-        """is the given piece in the buffer"""
+    def is_in_buffer(self, coords):
+        """is the given cell in the buffer"""
         # technically should add conditions to not let the piece be off to the side of the buffer
         # however, given the board size the piece couldn't possibly get there in time so it's a non-issue
+        direction = self.current_direction
         if direction == "down":
             return coords[1] < 0
         elif direction == "up":
@@ -93,7 +94,7 @@ class Board:
             return coords[0] >= self.size
 
     def change_direction(self, direction):
-        if self.current_direction == direction or self.any_in_buffer(self.active_piece, self.current_direction):
+        if self.current_direction == direction or self.any_in_buffer(self.active_piece):
             return
         self.current_direction = direction
         self.static_drop()
@@ -136,7 +137,7 @@ class Board:
 
     def static_drop(self):
         """Drop all cells on the board as individuals, including the active piece"""
-        if self.any_in_buffer(self.active_piece, self.current_direction):
+        if self.any_in_buffer(self.active_piece):
             return
         for cell in TransformPiece.sort_cells(self.grid.keys(), self.current_direction):
             self.drop([cell])
@@ -145,7 +146,11 @@ class Board:
         if self.current_direction == direction or TransformPiece.get_opposite_direction(self.current_direction) == direction:
             return
         self.shift_cells(self.active_piece, direction)
-        self.active_piece = TransformPiece.shift_coordinates(self.active_piece, direction)
+        new_coords = TransformPiece.shift_coordinates(self.active_piece, direction)
+        for cell in new_coords:
+            if self.is_out_of_bounds(cell) and not self.is_in_buffer(cell):
+                return
+        self.active_piece = new_coords
 
     def drop(self, cells):
         """drop the given cell(s) until at least one reaches a collision"""
@@ -284,7 +289,7 @@ class Board:
                 continue
             adjacent_coords = TransformPiece.get_adjacent_coordinates(cell, direction)
             adjacent_value = self.get_cell_value(adjacent_coords)
-            if adjacent_value == -1 and not self.is_in_buffer(adjacent_coords, self.current_direction):
+            if adjacent_value == -1 and not self.is_in_buffer(adjacent_coords):
                 return
         # do shift
         for cell in sorted_cells:
