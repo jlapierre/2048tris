@@ -6,4 +6,4 @@ Todo:
 - add end screen instead of exiting the program
 - why do pieces leave ghost trails in the buffer?
 - shifting does not do combos among existing pieces (it should)
-- in some other cases, it just keeps incrementing the same piece/s for an auto-win
+- in some other cases, it just keeps incrementing the same piece/s for an auto-win after shifting (usually to the left)
