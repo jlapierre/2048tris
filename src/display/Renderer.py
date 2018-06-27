@@ -19,8 +19,7 @@ class Renderer:
         surface_length = (square_size + padding_size) * (board.size + buffer_size * 2) + padding_size
         size = (surface_length, surface_length)
         self.surface = pygame.Surface(size)
-        background = pygame.Rect(0, 0, surface_length, surface_length)
-        pygame.draw.rect(self.surface, pygame.Color(Renderer.background_color), background)
+        self.background = pygame.Rect(0, 0, surface_length, surface_length)
         self.screen = pygame.display.set_mode(size)
         self.clock = pygame.time.Clock()
 
@@ -55,13 +54,16 @@ class Renderer:
         self.board.update_grid()
 
     def draw_board(self):
-        self.get_board_image(self.board, self.square_size, self.padding_size, self.buffer_size, self.surface)
+        self.get_board_image(self.board, self.square_size, self.padding_size, self.buffer_size, self.surface, self.background)
         self.screen.blit(self.surface, (0, 0))
         pygame.display.flip()
 
     @staticmethod
-    def get_board_image(board, square_size, padding_size, buffer_size, surface):
+    def get_board_image(board, square_size, padding_size, buffer_size, surface, background):
+        pygame.draw.rect(surface, pygame.Color(Renderer.background_color), background)
         for cell in board.grid.keys():
+            if board.get_cell_value(cell) < 0:
+                continue
             x = cell[0]
             y = cell[1]
             # x coordinate
@@ -69,7 +71,7 @@ class Renderer:
             # y coordinate
             top = (square_size + padding_size) * y + padding_size + (buffer_size * square_size)
             square = pygame.Rect(left, top, square_size, square_size)
-            color = Renderer.get_color(board.get_cell_value((x, y)))
+            color = Renderer.get_color(board.get_cell_value(cell))
             pygame.draw.rect(surface, color, square)
             # todo: print value over square
         return surface
