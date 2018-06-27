@@ -78,30 +78,30 @@ class Renderer:
 
     @staticmethod
     def get_color(value):
-        color = Renderer.background_color
-        if value == 0:
-            color = 0xcccccc
-        elif value == 2:
-            color = 0xb55858
-        elif value == 4:
-            color = 0xffe32d
-        elif value == 8:
-            color = 0x5ba510
-        elif value == 16:
-            color = 0x0fa550
-        elif value == 32:
-            color = 0x26d7e0
-        elif value == 64:
-            color = 0x0a3296
-        elif value == 128:
-            color = 0x5d0a96
-        elif value == 256:
-            color = 0xd11cdb
-        elif value == 512:
-            color = 0xce0275
-        elif value == 1024:
-            color = 0xce010f
-        elif value == 2048:
-            color = 0x000000
-
-        return color
+        colors = {
+            # gray
+            0: 0xcccccc,
+            # red
+            2: 0xff0000,
+            # orange
+            4: 0xff8000,
+            # yellow
+            8: 0xffff00,
+            # light green
+            16: 0x00ff00,
+            # dark green
+            32: 0x009933,
+            # aqua
+            64: 0x00ffff,
+            # blue
+            128: 0x3399ff,
+            # dark blue
+            256: 0x0000ff,
+            # purple
+            512: 0x9933ff,
+            # fuchsia
+            1024: 0xff00ff,
+            # black
+            2048: 0x000000,
+        }
+        return colors.get(value, Renderer.background_color)
