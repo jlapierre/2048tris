@@ -51,6 +51,8 @@ class Board:
         value = PieceFactory.get_value()
         for cell in self.active_piece:
             self.set_cell_value(cell, value)
+        if self.piece_collision_exists(self.active_piece):
+            self.handle_active_piece_collision()
 
     def active_piece_contains(self, coords):
         """Is the given coordinate pair part of the active piece"""
