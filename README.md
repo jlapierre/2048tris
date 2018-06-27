@@ -14,4 +14,3 @@ Game rules:
 Todo:
 - add end screen instead of exiting the programs
 - factor out merge logic (double one and clear the other) into a helper
-- merging active piece from the side does not deactivate it

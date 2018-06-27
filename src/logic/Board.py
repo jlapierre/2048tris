@@ -148,12 +148,14 @@ class Board:
         elif TransformPiece.get_opposite_direction(self.current_direction) == direction:
             self.rotate_active_piece()
             return
-        self.shift_cells(self.active_piece, direction)
         new_coords = TransformPiece.shift_coordinates(self.active_piece, direction)
         for cell in new_coords:
             if self.is_out_of_bounds(cell) and not self.is_in_buffer(cell):
                 return
+        merged = self.shift_cells(self.active_piece, direction)
         self.active_piece = new_coords
+        if merged:
+            self.active_piece = None
 
     def drop(self, cells):
         """drop the given cell(s) until at least one reaches a collision"""
@@ -302,7 +304,8 @@ class Board:
             self.game_over = True
 
     def shift_cells(self, cells, direction):
-        """shift the given cells by one in the given direction, ignoring empty ones"""
+        """shift the given cells by one in the given direction, returns whether a merge occurred"""
+        merge = False
         # sorted so cells within the same piece won't run into each other
         sorted_cells = TransformPiece.sort_cells(cells, direction)
         # if trying to shift past a wall, abort mission
@@ -329,6 +332,8 @@ class Board:
                 # do merge
                 self.set_cell_value(adjacent_coords, value * 2)
                 self.clear_cell(cell)
+                merge = True
+        return merge
 
     def clear_cell(self, cell):
         if self.is_out_of_bounds(cell):
