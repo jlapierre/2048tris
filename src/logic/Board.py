@@ -198,11 +198,20 @@ class Board:
         """returns the column up to and including the given cell"""
         column = self.get_column(coords, direction)
         column.append(coords)
+        # sort so the given cell isn't just tacked on the end
+        if direction == "up" or direction == "down":
+            # sort by y
+            column.sort(key=lambda c: c[1])
+        elif direction == "left" or direction == "right":
+            # sort by x
+            column.sort(key=lambda c: c[0])
 
         return column
 
     def do_static_merge(self, top_cell, bottom_cell):
-        """merge the given matching cells and shift others accordingly"""
+        """if their values match, merge the given cells and shift others accordingly"""
+        if self.get_cell_value(top_cell) != self.get_cell_value(bottom_cell):
+            return
         self.set_cell_value(top_cell, self.get_cell_value(top_cell) * 2)
         self.clear_cell(bottom_cell)
         self.shift_column(bottom_cell, self.current_direction)
@@ -320,3 +329,19 @@ class Board:
 
     def is_game_won(self):
         return self.get_max_cell_value() >= 2048
+
+    def debug(self, command):
+        if command == "print_grid":
+            # print the current grid as a visualized array
+            Board.visualize(self.grid, self.size)
+
+    @staticmethod
+    def visualize(grid, board_size=16):
+        """prints the given grid as a visualized 2D array of values"""
+        visual_grid = []
+        for i in range(board_size):
+            row = []
+            for j in range(board_size):
+                row.append(grid[(j, i)])
+            visual_grid.append(row)
+        print(visual_grid)

@@ -15,8 +15,7 @@ class InputProcessor:
                     return "down"
                 elif event.key == K_d:
                     return "right"
-                else:
-                    return None
+        return None
 
     @staticmethod
     def get_piece_shift(event_list):
@@ -35,5 +34,12 @@ class InputProcessor:
                     return "drop"
                 elif event.key == K_SLASH:
                     return "rotate"
-                else:
-                    return None
+        return None
+
+    @staticmethod
+    def get_debug(event_list):
+        for event in reversed(event_list):
+            if event.type == pygame.KEYDOWN:
+                if event.key == K_j:
+                    return "print_grid"
+        return None

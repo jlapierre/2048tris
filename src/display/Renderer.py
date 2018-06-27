@@ -40,6 +40,9 @@ class Renderer:
     def update_board(self, event_list):
         new_dir = InputProcessor.get_new_direction(event_list)
         piece_shift = InputProcessor.get_piece_shift(event_list)
+        debug = InputProcessor.get_debug(event_list)
+        if debug is not None:
+            self.board.debug(debug)
         if new_dir is not None:
             self.board.change_direction(new_dir)
         if piece_shift is not None:
