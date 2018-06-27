@@ -201,10 +201,11 @@ class Board:
 
         return column
 
-    def do_static_merge(self, topCell, bottomCell):
+    def do_static_merge(self, top_cell, bottom_cell):
         """merge the given matching cells and shift others accordingly"""
-        self.set_cell_value(topCell, self.get_cell_value(topCell) * 2)
-        self.shift_column(bottomCell, self.current_direction)
+        self.set_cell_value(top_cell, self.get_cell_value(top_cell) * 2)
+        self.clear_cell(bottom_cell)
+        self.shift_column(bottom_cell, self.current_direction)
         self.drop_unattached()
 
     def merge_with_completed_rows(self):
