@@ -14,4 +14,5 @@ Todo:
 - if a piece merges, blocks to the sides prevent cells from shifting down
 - if a piece merges, sometimes 2 cells in the active piece will combine
 - maybe i should change the logic so cells only merge if the whole piece can shift down (all cells move or no cells move)
-- add end screen instead of exiting the program
+- cells randomly disappearing from active piece
+- add end screen instead of exiting the programs

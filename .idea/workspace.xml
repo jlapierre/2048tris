@@ -4,7 +4,6 @@
     <list default="true" id="a77914a6-3616-497d-b9bb-6d50981046f2" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/display/Renderer.py" afterPath="$PROJECT_DIR$/src/display/Renderer.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -15,7 +14,7 @@
   </component>
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/2048tris$Unittests_in_BoardTest_py.coverage" NAME="Unittests in BoardTest.py Coverage Results" MODIFIED="1530084542819" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test/logic" />
-    <SUITE FILE_PATH="coverage/2048tris$main.coverage" NAME="main Coverage Results" MODIFIED="1530086272846" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
+    <SUITE FILE_PATH="coverage/2048tris$main.coverage" NAME="main Coverage Results" MODIFIED="1530086847021" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
@@ -665,7 +664,14 @@
       <option name="project" value="LOCAL" />
       <updated>1530084664512</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="bug fix for buffer ghost trails">
+      <created>1530086376940</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1530086376940</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -758,7 +764,8 @@
     <MESSAGE value="update readme" />
     <MESSAGE value="fix auto-win bug in static merge, new bugs noted, game rules added to readme" />
     <MESSAGE value="bug fix for static merge, added a test" />
-    <option name="LAST_COMMIT_MESSAGE" value="bug fix for static merge, added a test" />
+    <MESSAGE value="bug fix for buffer ghost trails" />
+    <option name="LAST_COMMIT_MESSAGE" value="bug fix for buffer ghost trails" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
