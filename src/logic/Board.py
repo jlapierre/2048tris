@@ -277,16 +277,25 @@ class Board:
         return is_unattached
 
     def handle_active_piece_collision(self):
+        cells_to_merge = []
         for cell in self.active_piece:
             adjacent_cell = TransformPiece.get_adjacent_coordinates(cell, self.current_direction)
+            if adjacent_cell in self.active_piece:
+                continue
             adjacent_value = self.get_adjacent_value(cell, self.current_direction)
-            if adjacent_cell not in self.active_piece and self.get_cell_value(cell) == adjacent_value:
+            if self.get_cell_value(cell) == adjacent_value:
+                cells_to_merge.append(cell)
+            elif adjacent_value != 0:
+                # the whole piece cannot shift down without breaking, so do not merge
+                return
+        for cell in TransformPiece.sort_cells(self.active_piece, self.current_direction):
+            if cell in cells_to_merge:
                 # do merge
-                self.set_cell_value(adjacent_cell, adjacent_value * 2)
-                self.clear_cell(cell)
-        # move down remaining active cells if they are floating
-        if self.is_piece_unattached(self.active_piece):
-            self.shift_cells(self.active_piece, self.current_direction)
+                self.set_cell_value(TransformPiece.get_adjacent_coordinates(cell, self.current_direction), self.get_cell_value(cell) * 2)
+            else:
+                # shift down
+                self.set_cell_value(TransformPiece.get_adjacent_coordinates(cell, self.current_direction), self.get_cell_value(cell))
+            self.clear_cell(cell)
 
         # if piece is out of bounds, declare game over
         if any(self.is_out_of_bounds(cell) for cell in self.active_piece):
