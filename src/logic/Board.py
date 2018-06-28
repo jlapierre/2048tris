@@ -292,7 +292,8 @@ class Board:
             elif adjacent_value != 0:
                 # the whole piece cannot shift down without breaking, so do not merge
                 return
-        for cell in TransformPiece.sort_cells(self.active_piece, self.current_direction):
+        new_piece = TransformPiece.sort_cells(self.active_piece, self.current_direction)
+        for cell in new_piece:
             if cell in cells_to_merge:
                 # do merge
                 self.set_cell_value(TransformPiece.get_adjacent_coordinates(cell, self.current_direction), self.get_cell_value(cell) * 2)
@@ -300,6 +301,8 @@ class Board:
                 # shift down
                 self.set_cell_value(TransformPiece.get_adjacent_coordinates(cell, self.current_direction), self.get_cell_value(cell))
             self.clear_cell(cell)
+        if self.any_in_buffer(new_piece):
+            self.game_over = True
 
         # if piece is out of bounds, declare game over
         if any(self.is_out_of_bounds(cell) for cell in self.active_piece):

@@ -14,3 +14,5 @@ Game rules:
 Todo:
 - add end screen instead of exiting the programs
 - factor out merge logic (double one and clear the other) into a helper
+- blocks in active piece randomly disappearing/not rendering
+- player suggestion: smaller board size
