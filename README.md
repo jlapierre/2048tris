@@ -12,7 +12,7 @@ Game rules:
 - static tiles with like values can merge iff the relative lower tile is in a completed row
 
 Todo:
-- add end screen instead of exiting the programs
-- factor out merge logic (double one and clear the other) into a helper
+- add end screen instead of exiting the program
+- factor out merge logic (double one cell and clear the other) into a helper
 - blocks in active piece randomly disappearing/not rendering
-- player suggestion: smaller board size
+- player suggestion: smaller board size (perhaps configurable by the player)
